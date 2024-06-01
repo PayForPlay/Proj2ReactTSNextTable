@@ -1,0 +1,342 @@
+@mixin overflow-ellipsis($type: ellipsis) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: $type;
+}
+
+@mixin button-reset() {
+    padding: 0;
+
+    font-family: var(--g-text-body-font-family);
+    font-size: inherit;
+    font-weight: var(--g-text-body-font-weight);
+
+    color: inherit;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin expand-interactive-area($h: 4px, $v: $h) {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: logical (-$v) (-$h) (-$v);
+    }
+}
+
+@mixin max-height($height) {
+    max-height: $height;
+    overflow-y: auto;
+}
+
+@mixin max-text-width($width: 100%) {
+    @include overflow-ellipsis();
+
+    max-width: $width;
+}
+
+@mixin aspect-ratio($ratio) {
+    position: relative;
+
+    &::before {
+        display: block;
+        content: '';
+        width: 100%;
+        padding-block-start: $ratio * 100%;
+    }
+
+    > *:only-child {
+        position: absolute;
+        inset: 0;
+    }
+}
+
+@function get-pin-selector($mod, $selector, $append: true) {
+    @if $append {
+        @return selector-append($mod, $selector);
+    } @else {
+        @return join($mod, $selector, $separator: space);
+    }
+}
+
+@mixin pin($block, $selectors, $radius, $append: true) {
+    @each $selector in $selectors {
+        &#{get-pin-selector(#{$block}_pin_round-round, $selector, $append)} {
+            border-radius: $radius;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_brick-brick, $selector, $append)} {
+            border-radius: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_clear-clear, $selector, $append)} {
+            border-radius: 0;
+            border-inline: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_circle-circle, $selector, $append)} {
+            border-radius: 100px;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_round-brick, $selector, $append)} {
+            border-start-start-radius: $radius;
+            border-start-end-radius: 0;
+            border-end-start-radius: $radius;
+            border-end-end-radius: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_brick-round, $selector, $append)} {
+            border-start-start-radius: 0;
+            border-start-end-radius: $radius;
+            border-end-start-radius: 0;
+            border-end-end-radius: $radius;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_round-clear, $selector, $append)} {
+            border-start-start-radius: $radius;
+            border-start-end-radius: 0;
+            border-end-start-radius: $radius;
+            border-end-end-radius: 0;
+            border-inline-end: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_clear-round, $selector, $append)} {
+            border-start-start-radius: 0;
+            border-start-end-radius: $radius;
+            border-end-start-radius: 0;
+            border-end-end-radius: $radius;
+            border-inline-start: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_brick-clear, $selector, $append)} {
+            border-radius: 0;
+            border-inline-end: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_clear-brick, $selector, $append)} {
+            border-radius: 0;
+            border-inline-start: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_circle-brick, $selector, $append)} {
+            border-start-start-radius: 100px;
+            border-start-end-radius: 0;
+            border-end-start-radius: 100px;
+            border-end-end-radius: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_brick-circle, $selector, $append)} {
+            border-start-start-radius: 0;
+            border-start-end-radius: 100px;
+            border-end-start-radius: 0;
+            border-end-end-radius: 100px;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_circle-clear, $selector, $append)} {
+            border-start-start-radius: 100px;
+            border-start-end-radius: 0;
+            border-end-start-radius: 100px;
+            border-end-end-radius: 0;
+            border-inline-end: 0;
+        }
+
+        &#{get-pin-selector(#{$block}_pin_clear-circle, $selector, $append)} {
+            border-start-start-radius: 0;
+            border-start-end-radius: 100px;
+            border-end-start-radius: 0;
+            border-end-end-radius: 100px;
+            border-inline-start: 0;
+        }
+    }
+}
+
+// Typography
+
+@mixin text-body-1() {
+    font-size: var(--g-text-body-1-font-size);
+    line-height: var(--g-text-body-1-line-height);
+    font-weight: var(--g-text-body-font-weight);
+}
+
+@mixin text-body-2() {
+    font-size: var(--g-text-body-2-font-size);
+    line-height: var(--g-text-body-2-line-height);
+    font-weight: var(--g-text-body-font-weight);
+}
+
+@mixin text-body-3() {
+    font-size: var(--g-text-body-3-font-size);
+    line-height: var(--g-text-body-3-line-height);
+    font-weight: var(--g-text-body-font-weight);
+}
+
+@mixin text-body-short() {
+    font-size: var(--g-text-body-short-font-size);
+    line-height: var(--g-text-body-short-line-height);
+    font-weight: var(--g-text-body-font-weight);
+}
+
+@mixin text-caption-1() {
+    font-size: var(--g-text-caption-1-font-size);
+    line-height: var(--g-text-caption-1-line-height);
+    font-weight: var(--g-text-caption-font-weight);
+}
+
+@mixin text-caption-2() {
+    font-size: var(--g-text-caption-2-font-size);
+    line-height: var(--g-text-caption-2-line-height);
+    font-weight: var(--g-text-caption-font-weight);
+}
+
+@mixin text-header-1() {
+    font-size: var(--g-text-header-1-font-size);
+    line-height: var(--g-text-header-1-line-height);
+    font-weight: var(--g-text-header-font-weight);
+}
+
+@mixin text-header-2() {
+    font-size: var(--g-text-header-2-font-size);
+    line-height: var(--g-text-header-2-line-height);
+    font-weight: var(--g-text-header-font-weight);
+}
+
+@mixin text-subheader-1() {
+    font-size: var(--g-text-subheader-1-font-size);
+    line-height: var(--g-text-subheader-1-line-height);
+    font-weight: var(--g-text-subheader-font-weight);
+}
+
+@mixin text-subheader-2() {
+    font-size: var(--g-text-subheader-2-font-size);
+    line-height: var(--g-text-subheader-2-line-height);
+    font-weight: var(--g-text-subheader-font-weight);
+}
+
+@mixin text-subheader-3() {
+    font-size: var(--g-text-subheader-3-font-size);
+    line-height: var(--g-text-subheader-3-line-height);
+    font-weight: var(--g-text-subheader-font-weight);
+}
+
+@mixin text-display-1() {
+    font-size: var(--g-text-display-1-font-size);
+    line-height: var(--g-text-display-1-line-height);
+    font-weight: var(--g-text-display-font-weight);
+}
+
+@mixin text-display-2() {
+    font-size: var(--g-text-display-2-font-size);
+    line-height: var(--g-text-display-2-line-height);
+    font-weight: var(--g-text-display-font-weight);
+}
+
+@mixin text-display-3() {
+    font-size: var(--g-text-display-3-font-size);
+    line-height: var(--g-text-display-3-line-height);
+    font-weight: var(--g-text-display-font-weight);
+}
+
+@mixin text-display-4() {
+    font-size: var(--g-text-display-4-font-size);
+    line-height: var(--g-text-display-4-line-height);
+    font-weight: var(--g-text-display-font-weight);
+}
+
+@mixin text-code-1() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-1-font-size);
+    line-height: var(--g-text-code-1-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-code-2() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-2-font-size);
+    line-height: var(--g-text-code-2-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-code-3() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-3-font-size);
+    line-height: var(--g-text-code-3-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-code-inline-1() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-inline-1-font-size);
+    line-height: var(--g-text-code-inline-1-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-code-inline-2() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-inline-2-font-size);
+    line-height: var(--g-text-code-inline-2-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-code-inline-3() {
+    font-family: var(--g-font-family-monospace);
+    font-size: var(--g-text-code-inline-3-font-size);
+    line-height: var(--g-text-code-inline-3-line-height);
+    font-weight: var(--g-text-code-font-weight);
+}
+
+@mixin text-accent() {
+    font-weight: var(--g-text-accent-font-weight);
+}
+
+@mixin loading($loading-color-1: rgba(255, 255, 255, 0.3), $loading-color-2: transparent) {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        $loading-color-1,
+        $loading-color-1 4px,
+        $loading-color-2 4px,
+        $loading-color-2 8px
+    );
+    background-size: 150%;
+    background-clip: padding-box;
+
+    // stylelint-disable-next-line no-unknown-animations
+    animation: g-loading-animation 0.5s linear infinite;
+}
+
+@mixin g-colors-private-color-light {
+    --g-color-private-color-50: rgba(153,105,0,0.1);
+    --g-color-private-color-100: rgba(153,105,0,0.15);
+    --g-color-private-color-150: rgba(153,105,0,0.2);
+    --g-color-private-color-200: rgba(153,105,0,0.3);
+    --g-color-private-color-250: rgba(153,105,0,0.4);
+    --g-color-private-color-300: rgba(153,105,0,0.5);
+    --g-color-private-color-350: rgba(153,105,0,0.6);
+    --g-color-private-color-400: rgba(153,105,0,0.7);
+    --g-color-private-color-450: rgba(153,105,0,0.8);
+    --g-color-private-color-500: rgba(153,105,0,0.9);
+
+    --g-color-private-color-50-solid: rgb(245,240,230);
+    --g-color-private-color-100-solid: rgb(240,233,217);
+    --g-color-private-color-150-solid: rgb(235,225,204);
+    --g-color-private-color-200-solid: rgb(224,210,179);
+    --g-color-private-color-250-solid: rgb(214,195,153);
+    --g-color-private-color-300-solid: rgb(204,180,128);
+    --g-color-private-color-350-solid: rgb(194,165,102);
+    --g-color-private-color-400-solid: rgb(184,150,77);
+    --g-color-private-color-450-solid: rgb(173,135,51);
+    --g-color-private-color-500-solid: rgb(163,120,25);
+    --g-color-private-color-550-solid: rgb(153,105,0);
+    --g-color-private-color-600-solid: rgb(142,99,5);
+    --g-color-private-color-650-solid: rgb(131,93,10);
+    --g-color-private-color-700-solid: rgb(121,87,15);
+    --g-color-private-color-750-solid: rgb(110,81,20);
+    --g-color-private-color-800-solid: rgb(99,75,26);
+    --g-color-private-color-850-solid: rgb(88,68,31);
+    --g-color-private-color-900-solid: rgb(77,62,36);
+    --g-color-private-color-950-solid: rgb(67,56,41);
+    --g-color-private-color-1000-solid: rgb(61,53,43);
+}
